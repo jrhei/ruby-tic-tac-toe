@@ -16,7 +16,7 @@ class Player
 end
 
 module Board
-    @@array_tiles = Array.new(5, Array.new(5,"   "))
+    @@array_tiles = Array.new(5) {Array.new(5, "   ")}
     def create_board
         for i in 0..4
             if i == 0 || i == 2 || i == 4
@@ -44,6 +44,9 @@ module Board
     end
     def get_board
         @@array_tiles
+    end
+    def set_board(value,x ,y)
+        @@array_tiles[x][y]=value
     end
     def instructions
         puts "\n\n------INSTRUCTIONS------\n\n"
@@ -106,40 +109,73 @@ class Game
     puts "Player #{player_two.get_player} name: #{player_two.name}"
     puts player_two.player_symbol
     @@round = 1
-    game_state = true
-    tile_chosen = ""
-    while game_state
-        if (@@round % 2 == 0)
-            while !(1..9).include?(tile_chosen)
-                print "Player 2's turn, Input which tile you want: "
-                tile_chosen = gets.chomp.to_i
-                puts tile_chosen
-                if !(1..9).include?(tile_chosen)
-                    print "Invalid Tile! Input again\n"
-                end
-            end
-        else
-            while !(1..9).include?(tile_chosen)
-                print "Player 1's turn, Input which tile you want: "
-                tile_chosen = gets.chomp.to_i
-                puts tile_chosen
-                if !(1..9).include?(tile_chosen)
-                    print "Invalid Tile! Input again\n"
-                else
-                    
-                end
-            end
+    def get_round
+        @@round
+    end
+    def iterate_round
+        @@round +=1 
+    end
+    def player_input(player_chosen, tile_chosen)
+        if (tile_chosen == 1)
+            set_board(" #{player_chosen} ", 0, 0)
+        elsif (tile_chosen == 2)
+            set_board(" #{player_chosen} ", 0, 2)
+        elsif (tile_chosen == 3)
+            set_board(" #{player_chosen} ", 0, 4)
+        elsif (tile_chosen == 4)
+            set_board(" #{player_chosen} ", 2, 0)
+        elsif (tile_chosen == 5)
+            set_board(" #{player_chosen} ", 2, 2)
+        elsif (tile_chosen == 6)
+            set_board(" #{player_chosen} ", 2, 4)
+        elsif (tile_chosen == 7)
+            set_board(" #{player_chosen} ", 4, 0)
+        elsif (tile_chosen == 8)
+            set_board(" #{player_chosen} ", 4, 2)
+        elsif (tile_chosen == 9)
+            set_board(" #{player_chosen} ", 4, 4)
         end
-        @@round += 1
     end
 end
 
 
-
 g = Game.new
 g.instructions
-g.create_board
+game_state = true
+tile_chosen = ""
+while game_state
+    g.create_board
+    valid_choice = false
+    if (g.get_round % 2 == 0)
+        while valid_choice == false
+            print "Player 2's turn, Input which tile you want: "
+            tile_chosen = gets.chomp.to_i
+            puts tile_chosen
+            if !(1..9).include?(tile_chosen)
+                print "Invalid Tile! Input again\n"
+            else
+                valid_choice = true
+                g.player_input("o", tile_chosen)
+            end
+        end
+    else
+        while valid_choice == false
+            print "Player 1's turn, Input which tile you want: "
+            tile_chosen = gets.chomp.to_i
+            if !(1..9).include?(tile_chosen)
+                print "Invalid Tile! Input again\n"
+            else
+                valid_choice = true 
+                g.player_input("x", tile_chosen)
+            end
+        end
+    end
+    g.iterate_round 
+
+end
+#g.create_board
 #p g.get_board
+
 
 =begin
    def create_game
