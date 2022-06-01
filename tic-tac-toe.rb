@@ -42,8 +42,8 @@ module Board
             end
         end
     end
-    def get_board
-        @@array_tiles
+    def get_board_coordinates(x,y)
+        @@array_tiles[x][y]
     end
     def set_board(value,x ,y)
         @@array_tiles[x][y]=value
@@ -117,34 +117,123 @@ class Game
     end
     def player_input(player_chosen, tile_chosen)
         if (tile_chosen == 1)
-            set_board(" #{player_chosen} ", 0, 0)
+            if get_board_coordinates(0, 0) != "   "
+                puts "Tile already Taken!"
+            else
+                set_board(" #{player_chosen} ", 0, 0)
+            end
         elsif (tile_chosen == 2)
-            set_board(" #{player_chosen} ", 0, 2)
+            if get_board_coordinates(0, 2) != "   "
+                puts "Tile already Taken!"
+            else
+                set_board(" #{player_chosen} ", 0, 2)
+            end
         elsif (tile_chosen == 3)
-            set_board(" #{player_chosen} ", 0, 4)
+            if get_board_coordinates(0, 4) != "   "
+                puts "Tile already Taken!"
+            else
+                set_board(" #{player_chosen} ", 0, 4)
+            end
         elsif (tile_chosen == 4)
-            set_board(" #{player_chosen} ", 2, 0)
+            if get_board_coordinates(2, 0) != "   "
+                puts "Tile already Taken!"
+            else
+                set_board(" #{player_chosen} ", 2, 0)
+            end
         elsif (tile_chosen == 5)
-            set_board(" #{player_chosen} ", 2, 2)
+            if get_board_coordinates(2, 2) != "   "
+                puts "Tile already Taken!"
+            else
+                set_board(" #{player_chosen} ", 2, 2)
+            end
         elsif (tile_chosen == 6)
-            set_board(" #{player_chosen} ", 2, 4)
+            if get_board_coordinates(2, 4) != "   "
+                puts "Tile already Taken!"
+            else
+                set_board(" #{player_chosen} ", 2, 4)
+            end
         elsif (tile_chosen == 7)
-            set_board(" #{player_chosen} ", 4, 0)
+            if get_board_coordinates(4, 0) != "   "
+                puts "Tile already Taken!"
+            else
+                set_board(" #{player_chosen} ", 4, 0)
+            end
         elsif (tile_chosen == 8)
-            set_board(" #{player_chosen} ", 4, 2)
+            if get_board_coordinates(4, 2) != "   "
+                puts "Tile already Taken!"
+            else
+                set_board(" #{player_chosen} ", 4, 2)
+            end  
         elsif (tile_chosen == 9)
-            set_board(" #{player_chosen} ", 4, 4)
+            if get_board_coordinates(4, 4) != "   "
+                puts "Tile already Taken!"
+            else
+                set_board(" #{player_chosen} ", 4, 4)
+            end
         end
     end
+    def check_winner
+        if get_board_coordinates(0,0) == " x " && get_board_coordinates(0,2) == " x " && get_board_coordinates(0,4) == " x " #123
+            puts "Player one has won!"
+            return true
+        elsif get_board_coordinates(0,0) == " o " && get_board_coordinates(0,2) == " o " && get_board_coordinates(0,4) == " o "
+            puts "Player two has won!"
+            return true
+        elsif get_board_coordinates(2,0) == " x " && get_board_coordinates(2,2) == " x " && get_board_coordinates(2,4) == " x " #456
+            puts "Player one has won!"
+            return true
+        elsif get_board_coordinates(2,0) == " o " && get_board_coordinates(2,2) == " o " && get_board_coordinates(2,4) == " o "
+            puts "Player two has won!"
+            return true
+        elsif get_board_coordinates(4,0) == " x " && get_board_coordinates(4,2) == " x " && get_board_coordinates(4,4) == " x " #789
+            puts "Player one has won!"
+            return true
+        elsif get_board_coordinates(4,0) == " o " && get_board_coordinates(4,2) == " o " && get_board_coordinates(4,4) == " o "
+            puts "Player two has won!"
+            return true
+        elsif get_board_coordinates(0,0) == " x " && get_board_coordinates(2,0) == " x " && get_board_coordinates(4,0) == " x " #147
+            puts "Player one has won!"
+            return true
+        elsif get_board_coordinates(0,0) == " o " && get_board_coordinates(2,0) == " o " && get_board_coordinates(4,0) == " o "
+            puts "Player two has won!"
+            return true
+        elsif get_board_coordinates(0,2) == " x " && get_board_coordinates(2,2) == " x " && get_board_coordinates(4,2) == " x " #258
+            puts "Player one has won!"
+            return true
+        elsif get_board_coordinates(0,2) == " o " && get_board_coordinates(2,2) == " o " && get_board_coordinates(4,2) == " o "
+            puts "Player two has won!"
+            return true
+        elsif get_board_coordinates(0,4) == " x " && get_board_coordinates(2,4) == " x " && get_board_coordinates(4,4) == " x " #369
+            puts "Player one has won!"
+            return true
+        elsif get_board_coordinates(0,4) == " o " && get_board_coordinates(2,4) == " o " && get_board_coordinates(4,4) == " o "
+            puts "Player two has won!"
+            return true
+        elsif get_board_coordinates(0,0) == " x " && get_board_coordinates(2,2) == " x " && get_board_coordinates(4,4) == " x " #159
+            puts "Player one has won!"
+            return true
+        elsif get_board_coordinates(0,0) == " o " && get_board_coordinates(2,2) == " o " && get_board_coordinates(4,4) == " o "
+            puts "Player two has won!"
+            return true
+        elsif get_board_coordinates(0,4) == " x " && get_board_coordinates(2,2) == " x " && get_board_coordinates(4,0) == " x " #357
+            puts "Player one has won!"
+            return true
+        elsif get_board_coordinates(0,4) == " o " && get_board_coordinates(2,2) == " o " && get_board_coordinates(4,0) == " o "
+            puts "Player two has won!"
+            return true
+        end
+    end
+
 end
 
 
 g = Game.new
 g.instructions
+g.create_board
 game_state = true
 tile_chosen = ""
 while game_state
-    g.create_board
+    
     valid_choice = false
     if (g.get_round % 2 == 0)
         while valid_choice == false
@@ -170,37 +259,52 @@ while game_state
             end
         end
     end
-    g.iterate_round 
+    g.iterate_round
+    g.create_board
+    if g.check_winner
+        game_state = false
+    end 
+    
 
 end
-#g.create_board
-#p g.get_board
-
-
 =begin
-   def create_game
-for i in 0..4
-    if i == 0 || i == 2 || i == 4
-        for y in 0..4
-            if y == 0 || y == 2 || y == 4
-                print "#{@@array_tiles[i][y]}"
-            elsif y == 1
-                print "|"
-            elsif y == 3
-                print "|"
-            end
-        end
-        print "\n"
-    elsif i == 1 || i == 3 
-        for x in 0..4
-            if x == 0 || x == 2 || x == 4
-                print "---"
+            if ((get_board_coordinates(0, 0) && get_board_coordinates(0, 2) && get_board_coordinates(0, 4) == " x ") ||
+            (get_board_coordinates(0, 0) && get_board_coordinates(0, 2) && get_board_coordinates(0, 4) == " o "))
+            if get_board_coordinates(0,0) == " x "
+                puts "player one has won"
+                return true
             else
-                print "+"
+                puts "player two has won"
+                return true
+            end
+        elsif ((get_board_coordinates(2, 0) && get_board_coordinates(2, 2) && get_board_coordinates(2, 4) == " x ") ||
+            (get_board_coordinates(2, 0) && get_board_coordinates(2, 2) && get_board_coordinates(2, 4) == " o "))
+            if get_board_coordinates(2,0) == " x "
+                puts "player one has won"
+                return true
+            else
+                puts "player two has won"
+                return true
+            end
+        elsif ((get_board_coordinates(4, 0) && get_board_coordinates(4, 2) && get_board_coordinates(4, 4) == " x ") ||
+            (get_board_coordinates(4, 0) && get_board_coordinates(4, 2) && get_board_coordinates(4, 4) == " o "))
+            if get_board_coordinates(4,0) == " x "
+                puts "player one has won"
+                return true
+            else
+                puts "player two has won"
+                return true
+            end
+        elsif ((get_board_coordinates(0, 0) && get_board_coordinates(1, 0) && get_board_coordinates(1, 0) == " x ") ||
+            (get_board_coordinates(0, 0) && get_board_coordinates(1, 0) && get_board_coordinates(1, 0) == " o "))
+            if get_board_coordinates(0,0) == " x "
+                puts "player one has won"
+                return true
+            else
+                puts "player two has won"
+                return true
             end
         end
-        print "\n"
-    end
-end
-end
+rescue => exception
+    
 =end
